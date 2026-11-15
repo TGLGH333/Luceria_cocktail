@@ -1,0 +1,13 @@
+# Dependencies and build output
+node_modules/
+dist/
+.vite/
+*.local
+
+# Local scratch files
+.dsh-write-test.tmp
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

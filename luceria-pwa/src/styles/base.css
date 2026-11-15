@@ -1,0 +1,161 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #080706;
+  color: var(--text-primary);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font: inherit;
+}
+
+:where(button, a, input, [tabindex]):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* 2.3: no touch target below 44 pt, including icon-only controls. */
+:where(button, [role='button'], input, select, textarea) {
+  min-height: 44px;
+}
+
+:where(button.round, button.close, button.more, button.check, button.icon, .tab) {
+  min-width: 44px;
+}
+
+/* 2.7: Larger touch targets grows every control, not only primary buttons. */
+[data-large-targets='true'] :where(button, [role='button']) {
+  min-height: 64px;
+}
+
+[data-large-targets='true'] :where(button.round, button.close, button.more, button.check, button.icon, .tab) {
+  min-width: 64px;
+}
+
+/* The HC token is transparent in Dark/Light, so these rules are safe everywhere. */
+[data-theme='hc']
+  :where(
+    button,
+    .row,
+    .panel,
+    .sheet,
+    .tile,
+    .ingredient,
+    .ingredient-card,
+    .bar-item,
+    .journal-entry,
+    .entry,
+    .unlock-card,
+    .stat-card,
+    .mindful,
+    .empty,
+    .search,
+    .tabbar
+  ) {
+  outline: 1.5px solid var(--outline-hc);
+  outline-offset: -1.5px;
+}
+
+[data-theme='hc'] .tabbar {
+  outline: 1.5px solid var(--outline-hc);
+  outline-offset: -1.5px;
+  border-radius: 999px;
+}
+
+[data-theme='hc'] .tabbar :where(.tab) {
+  outline: none;
+}
+
+[data-theme='hc'] .see-all {
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+[data-theme='hc'] .toast {
+  outline: 1.5px solid var(--outline-hc);
+  outline-offset: -1.5px;
+}
+
+[data-large-targets='true'] :where(.round, .btn, .chip, .filters-btn, .side-item) {
+  min-height: 64px;
+  min-width: 64px;
+}
+
+/*
+ * At 200% the floating tab bar would sit on top of the last rows of every
+ * tab page. Reserve its 68px + 28px gap inside the stage so the page scroll
+ * area ends above the bar instead of behind it. Immersive screens (recipe,
+ * mixing) do not get the class and keep the full 834px canvas.
+ */
+[data-text-large='true'] .ipad.has-tabbar {
+  padding-bottom: 96px;
+}
+
+[data-reduce-motion='true'] *,
+[data-reduce-motion='true'] *::before,
+[data-reduce-motion='true'] *::after {
+  animation: none !important;
+  transition-duration: 150ms !important;
+}
+
+.stage {
+  min-height: 100vh;
+  padding: 28px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(1200px 700px at 50% 18%, #181310 0%, #080706 68%),
+    #080706;
+}
+
+.canvas-wrap {
+  position: relative;
+}
+
+.ipad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1194px;
+  height: 834px;
+  overflow: hidden;
+  border-radius: 26px;
+  background: var(--bg-base);
+  transform-origin: top left;
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+/* On an iPad the stage is the app, not a framed desktop preview. */
+@media (pointer: coarse) {
+  .stage {
+    padding: 0;
+  }
+
+  .ipad {
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 150ms !important;
+  }
+}
