@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="55%">
+      <stop offset="0" stop-color="#d97a86" stop-opacity=".34" />
+      <stop offset="1" stop-color="#d97a86" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="pink" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2a1a3" />
+      <stop offset=".45" stop-color="#df727d" />
+      <stop offset="1" stop-color="#9d3f4b" />
+    </linearGradient>
+    <linearGradient id="ice" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".36" />
+      <stop offset="1" stop-color="#fff" stop-opacity=".06" />
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" />
+    </filter>
+    <clipPath id="glass">
+      <path d="M134 78 H266 Q276 78 276 88 V400 Q276 424 252 424 H148 Q124 424 124 400 V88 Q124 78 134 78 Z" />
+    </clipPath>
+  </defs>
+  <ellipse cx="200" cy="458" rx="108" ry="15" fill="#000" opacity=".4" filter="url(#soft)" />
+  <circle cx="200" cy="250" r="168" fill="url(#glow)" />
+  <g clip-path="url(#glass)">
+    <rect x="120" y="142" width="160" height="286" fill="url(#pink)" />
+    <ellipse cx="200" cy="142" rx="82" ry="12" fill="#ffc4b9" opacity=".5" />
+    <g fill="url(#ice)" stroke="#fff" stroke-opacity=".32" stroke-width="2">
+      <rect x="140" y="158" width="56" height="56" rx="9" transform="rotate(-9 168 186)" />
+      <rect x="204" y="160" width="56" height="56" rx="9" transform="rotate(12 232 188)" />
+      <rect x="164" y="212" width="58" height="58" rx="10" transform="rotate(4 193 241)" />
+      <rect x="146" y="276" width="54" height="54" rx="9" transform="rotate(-8 173 303)" />
+    </g>
+    <g fill="#fff" opacity=".5">
+      <circle cx="154" cy="238" r="3" />
+      <circle cx="174" cy="200" r="2.2" />
+      <circle cx="246" cy="236" r="2.6" />
+      <circle cx="228" cy="292" r="2" />
+      <circle cx="188" cy="352" r="2.4" />
+    </g>
+    <path d="M138 168 C150 250 180 322 224 386" fill="none" stroke="#fff" stroke-opacity=".26" stroke-width="3" />
+  </g>
+  <path d="M134 78 H266 Q276 78 276 88 V400 Q276 424 252 424 H148 Q124 424 124 400 V88 Q124 78 134 78 Z" fill="none" stroke="#f4e6cf" stroke-opacity=".8" stroke-width="2.4" />
+  <path d="M128 80 H272" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="7" stroke-linecap="round" />
+  <g fill="#fff8e7" opacity=".85">
+    <circle cx="136" cy="75" r="2" />
+    <circle cx="150" cy="72" r="1.7" />
+    <circle cx="170" cy="74" r="2.2" />
+    <circle cx="196" cy="71" r="1.6" />
+    <circle cx="222" cy="74" r="2" />
+    <circle cx="246" cy="72" r="1.8" />
+    <circle cx="262" cy="76" r="2.1" />
+  </g>
+  <g transform="translate(286 96) rotate(16)">
+    <circle cx="0" cy="0" r="47" fill="#f08a91" stroke="#ffd2c6" stroke-width="4" />
+    <circle cx="0" cy="0" r="37" fill="#ffb0a4" />
+    <g stroke="#fff4e2" stroke-width="2.4" opacity=".8">
+      <path d="M0 -35 V35 M-35 0 H35 M-24 -24 L24 24 M24 -24 L-24 24" />
+    </g>
+  </g>
+  <path d="M300 92 L330 52" fill="none" stroke="#f4e6cf" stroke-opacity=".55" stroke-width="3" stroke-linecap="round" />
+</svg>

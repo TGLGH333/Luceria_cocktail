@@ -20,6 +20,12 @@ export const ingredients: Ingredient[] = [
   { slug: 'agave', name: 'Agave', category: 'mixer', note: 'Agave syrup' },
   { slug: 'cranberry', name: 'Cranberry juice', category: 'mixer', note: 'Unsweetened cranberry juice' },
   { slug: 'egg-white', name: 'Egg white', category: 'fresh', note: 'Fresh egg white' },
+  { slug: 'espresso', name: 'Espresso', category: 'mixer', note: 'Freshly pulled, hot' },
+  { slug: 'aperol', name: 'Aperol', category: 'liqueur', abv: 11, note: 'Italian aperitivo bitter' },
+  { slug: 'prosecco', name: 'Prosecco', category: 'mixer', abv: 11, note: 'Dry sparkling wine' },
+  { slug: 'grapefruit-juice', name: 'Pink grapefruit juice', category: 'fresh', note: 'Freshly squeezed' },
+  { slug: 'grapefruit-soda', name: 'Grapefruit soda', category: 'mixer', note: 'Pink grapefruit soda' },
+  { slug: 'salt', name: 'Salt', category: 'fresh', note: 'Flaky sea salt, for the rim' },
 ]
 
 export const ingredientBySlug = new Map(ingredients.map((ingredient) => [ingredient.slug, ingredient]))
@@ -40,6 +46,12 @@ export const barOrder: string[] = [
   'sugar-syrup',
   'soda-water',
   'fresh-mint',
+  'espresso',
+  'aperol',
+  'prosecco',
+  'grapefruit-juice',
+  'grapefruit-soda',
+  'agave',
 ]
 
 export const initialBar: Record<string, StockLevel> = {

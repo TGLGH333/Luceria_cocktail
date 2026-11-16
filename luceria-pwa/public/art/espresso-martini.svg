@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="42%" r="55%">
+      <stop offset="0" stop-color="#b46a3d" stop-opacity=".42" />
+      <stop offset="1" stop-color="#b46a3d" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="coffee" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b87a52" />
+      <stop offset=".32" stop-color="#6d3a25" />
+      <stop offset="1" stop-color="#2e170f" />
+    </linearGradient>
+    <linearGradient id="foam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3dcc0" />
+      <stop offset="1" stop-color="#bf8f67" />
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" />
+    </filter>
+    <clipPath id="bowl">
+      <path d="M92 120 C96 206 138 266 200 266 C262 266 304 206 308 120 Z" />
+    </clipPath>
+  </defs>
+  <ellipse cx="200" cy="455" rx="112" ry="16" fill="#000" opacity=".4" filter="url(#soft)" />
+  <circle cx="200" cy="250" r="165" fill="url(#glow)" />
+  <path d="M92 120 C96 206 138 266 200 266 C262 266 304 206 308 120" fill="none" stroke="#f4e6cf" stroke-opacity=".82" stroke-width="2.4" />
+  <path d="M200 266 V410" fill="none" stroke="#f4e6cf" stroke-opacity=".8" stroke-width="2.2" />
+  <ellipse cx="200" cy="426" rx="72" ry="12" fill="none" stroke="#f4e6cf" stroke-opacity=".78" stroke-width="2.2" />
+  <ellipse cx="200" cy="426" rx="64" ry="8" fill="#0d0b0a" opacity=".45" />
+  <g clip-path="url(#bowl)">
+    <rect x="88" y="150" width="224" height="120" fill="url(#coffee)" />
+    <ellipse cx="200" cy="154" rx="112" ry="17" fill="url(#foam)" />
+    <ellipse cx="180" cy="151" rx="24" ry="7" fill="#f7e8d1" opacity=".45" />
+    <ellipse cx="230" cy="157" rx="16" ry="5" fill="#f7e8d1" opacity=".3" />
+    <path d="M118 196 C148 214 172 220 196 218" fill="none" stroke="#f4d7b8" stroke-opacity=".18" stroke-width="4" />
+  </g>
+  <path d="M100 132 C106 202 142 250 194 258" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2.2" />
+  <g fill="#2b140b" stroke="#5a2c18" stroke-width="1">
+    <ellipse cx="188" cy="142" rx="8" ry="5" transform="rotate(-24 188 142)" />
+    <ellipse cx="208" cy="147" rx="7" ry="4.5" transform="rotate(18 208 147)" />
+    <ellipse cx="170" cy="152" rx="6" ry="4" transform="rotate(38 170 152)" />
+  </g>
+</svg>

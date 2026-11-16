@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import DrinkGlass from '../components/DrinkGlass.vue'
+import DrinkArt from '../components/DrinkArt.vue'
 import { useDemoStore } from '../stores/demo'
 
 const router = useRouter()
@@ -78,7 +78,7 @@ function statusFor(slug: string) {
     <div v-if="filtered.length" class="grid">
       <button v-for="recipe in filtered" :key="recipe.slug" class="tile" type="button" @click="router.push(`/recipe/${recipe.slug}`)">
         <span class="art" :style="{ background: `radial-gradient(circle at 50% 42%, ${recipe.hue} 0%, var(--fill-1) 78%)` }">
-          <DrinkGlass :liquid="recipe.liquid" :hue="recipe.hue" mini />
+          <DrinkArt :recipe="recipe" mini />
         </span>
         <span class="tile-copy">
           <span class="tile-name">{{ recipe.name }}</span>
@@ -248,10 +248,16 @@ h1 {
   position: relative;
 }
 
+.art :deep(.drink-art) {
+  width: auto;
+  height: 148px;
+  margin: 26px auto 0;
+}
+
 .art :deep(.glass.mini) {
-  width: 82px;
-  height: 100px;
-  margin: 38px auto 0;
+  width: 92px;
+  height: 112px;
+  margin: 44px auto 0;
 }
 
 .tile-copy {

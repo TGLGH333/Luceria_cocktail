@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import DrinkGlass from '../components/DrinkGlass.vue'
+import DrinkArt from '../components/DrinkArt.vue'
 import { useDemoStore } from '../stores/demo'
 import type { Ingredient, Recipe } from '../types'
 
@@ -174,7 +174,7 @@ onBeforeUnmount(() => {
         <div class="unlock-list">
           <button v-for="recipe in unlockedRecipes.slice(0, 3)" :key="recipe.slug" class="unlock-row" type="button" @click="router.push(`/recipe/${recipe.slug}`)">
             <span class="unlock-art" :style="{ background: `radial-gradient(circle at 50% 40%, ${recipe.hue} 0%, var(--fill-1) 78%)` }">
-              <DrinkGlass :liquid="recipe.liquid" :hue="recipe.hue" mini />
+              <DrinkArt :recipe="recipe" mini />
             </span>
             <span>{{ recipe.name }}</span>
           </button>

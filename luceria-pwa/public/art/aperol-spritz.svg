@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="40%" r="55%">
+      <stop offset="0" stop-color="#e2763a" stop-opacity=".4" />
+      <stop offset="1" stop-color="#e2763a" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffb15a" />
+      <stop offset=".4" stop-color="#e9772f" />
+      <stop offset="1" stop-color="#a93e18" />
+    </linearGradient>
+    <linearGradient id="ice" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".34" />
+      <stop offset="1" stop-color="#fff" stop-opacity=".06" />
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" />
+    </filter>
+    <clipPath id="bowl">
+      <path d="M98 108 C98 212 142 292 200 292 C258 292 302 212 302 108 Z" />
+    </clipPath>
+  </defs>
+  <ellipse cx="200" cy="458" rx="106" ry="15" fill="#000" opacity=".4" filter="url(#soft)" />
+  <circle cx="200" cy="245" r="168" fill="url(#glow)" />
+  <path d="M98 108 C98 212 142 292 200 292 C258 292 302 212 302 108" fill="none" stroke="#f4e6cf" stroke-opacity=".82" stroke-width="2.4" />
+  <path d="M200 292 V412" fill="none" stroke="#f4e6cf" stroke-opacity=".8" stroke-width="2.2" />
+  <ellipse cx="200" cy="428" rx="70" ry="11" fill="none" stroke="#f4e6cf" stroke-opacity=".76" stroke-width="2.2" />
+  <ellipse cx="200" cy="428" rx="62" ry="7" fill="#0d0b0a" opacity=".45" />
+  <g clip-path="url(#bowl)">
+    <rect x="94" y="138" width="212" height="160" fill="url(#orange)" />
+    <ellipse cx="200" cy="138" rx="106" ry="14" fill="#ffca7a" opacity=".55" />
+    <g fill="url(#ice)" stroke="#fff" stroke-opacity=".32" stroke-width="2">
+      <rect x="128" y="160" width="52" height="52" rx="9" transform="rotate(-12 154 186)" />
+      <rect x="206" y="158" width="56" height="56" rx="10" transform="rotate(14 234 186)" />
+      <rect x="164" y="214" width="54" height="54" rx="10" transform="rotate(6 191 241)" />
+    </g>
+    <g fill="#fff" opacity=".5">
+      <circle cx="143" cy="234" r="3" />
+      <circle cx="156" cy="206" r="2" />
+      <circle cx="238" cy="228" r="2.6" />
+      <circle cx="250" cy="196" r="2" />
+      <circle cx="190" cy="170" r="2.2" />
+    </g>
+    <path d="M110 158 C120 224 156 274 198 284" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="3" />
+  </g>
+  <g transform="rotate(-18 300 126)">
+    <circle cx="300" cy="126" r="42" fill="#ef8d45" stroke="#ffd1a0" stroke-width="3" />
+    <circle cx="300" cy="126" r="33" fill="#ffbd6f" />
+    <g stroke="#fff1d6" stroke-width="2" opacity=".72">
+      <path d="M300 95 V157 M269 126 H331 M278 104 L322 148 M322 104 L278 148" />
+    </g>
+  </g>
+</svg>

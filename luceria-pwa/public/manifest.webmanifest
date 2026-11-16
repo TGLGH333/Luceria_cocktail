@@ -2,7 +2,7 @@
   "name": "Luceria",
   "short_name": "Luceria",
   "description": "Your bar, tonight. Cocktails from the bottles you own.",
-  "start_url": "./#/tonight",
+  "start_url": "./#/",
   "scope": "./",
   "display": "standalone",
   "orientation": "landscape",

@@ -3,6 +3,11 @@ export type Unit = 'ml' | 'oz' | 'cl'
 export type Theme = 'auto' | 'dark' | 'light' | 'hc'
 export type Method = 'Stirred' | 'Shaken' | 'Built' | 'Blended'
 
+export interface Account {
+  email: string
+  name?: string
+}
+
 export interface Ingredient {
   slug: string
   name: string

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import DrinkGlass from '../components/DrinkGlass.vue'
+import DrinkArt from '../components/DrinkArt.vue'
 import { useDemoStore } from '../stores/demo'
 
 const route = useRoute()
@@ -332,7 +332,7 @@ onBeforeUnmount(() => {
     <main v-if="stage === 'plan'" class="plan">
       <section class="plan-art">
         <div class="plan-art-glow" />
-        <DrinkGlass :liquid="recipe.liquid" :hue="recipe.hue" />
+        <DrinkArt :recipe="recipe" />
         <div class="plan-art-copy">
           <h2>{{ recipe.name }} · {{ servings }} drinks</h2>
           <div class="plan-meta">
@@ -387,7 +387,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
         <div v-else class="step-art">
-          <DrinkGlass :liquid="recipe.liquid" :hue="recipe.hue" />
+          <DrinkArt :recipe="recipe" />
         </div>
         <div v-if="step.timer" class="timer-actions">
           <button class="round" type="button" aria-label="Reset timer" @click="resetTimer">↺</button>
@@ -431,7 +431,7 @@ onBeforeUnmount(() => {
       </section>
       <section class="done-art">
         <div class="done-glow" />
-        <DrinkGlass :liquid="recipe.liquid" :hue="recipe.hue" />
+        <DrinkArt :recipe="recipe" />
       </section>
     </main>
 

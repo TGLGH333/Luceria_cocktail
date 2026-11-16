@@ -1,5 +1,10 @@
 * {
   box-sizing: border-box;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }
 
 html,
@@ -33,6 +38,17 @@ button {
 
 :where(button.round, button.close, button.more, button.check, button.icon, .tab) {
   min-width: 44px;
+}
+
+:where(button.round) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fill-2);
+  color: var(--text-primary);
+  cursor: pointer;
 }
 
 /* 2.7: Larger touch targets grows every control, not only primary buttons. */

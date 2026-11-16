@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import DrinkArt from '../components/DrinkArt.vue'
 import DrinkGlass from '../components/DrinkGlass.vue'
 import { useDemoStore } from '../stores/demo'
 
@@ -16,6 +17,7 @@ let toastTimer: number | undefined
 const ready = computed(() => store.readyRecipes)
 const heroRecipe = computed(() => ready.value[heroIndex.value % Math.max(1, ready.value.length)])
 const counts = computed(() => store.counts)
+const accountInitial = computed(() => (store.account?.name?.[0] || store.account?.email?.[0] || 'M').toUpperCase())
 
 const resolvedTheme = computed(() => {
   if (store.settings.theme !== 'auto') return store.settings.theme
@@ -66,6 +68,9 @@ const alsoPriority = [
   'boulevardier',
   'old-fashioned',
   'daiquiri',
+  'espresso-martini',
+  'aperol-spritz',
+  'paloma',
 ]
 
 const also = computed(() =>
@@ -80,6 +85,7 @@ const also = computed(() =>
       hue: resolvedTheme.value === 'light' ? recipe.hueLight : recipe.hue,
       liquid: recipe.liquid,
       art: recipe.art,
+      recipe,
     })),
 )
 
@@ -160,7 +166,7 @@ onBeforeUnmount(() => {
           </svg>
           <span class="bell-dot" />
         </button>
-        <button class="avatar" type="button" aria-label="Profile" @click="router.push('/settings')">M</button>
+        <button class="avatar" type="button" aria-label="Profile" @click="router.push('/settings')">{{ accountInitial }}</button>
       </div>
 
       <div v-if="heroRecipe" class="hero-copy">
@@ -222,7 +228,7 @@ onBeforeUnmount(() => {
             class="thumb"
             :style="{ background: `radial-gradient(circle at 50% 32%, ${drink.hue} 0%, var(--fill-1) 72%)` }"
           >
-            <DrinkGlass :liquid="drink.liquid" :hue="drink.hue" mini />
+            <DrinkArt :recipe="drink.recipe" :hue="drink.hue" mini />
           </span>
           <span class="card-copy">
             <span class="card-title">{{ drink.name }}</span>
@@ -292,6 +298,20 @@ onBeforeUnmount(() => {
 
 [data-text-large='true'] .lede {
   max-width: 820px;
+}
+
+[data-text-large='true'] .also {
+  margin-top: 0;
+}
+
+[data-text-large='true'] .also-head {
+  height: auto;
+  min-height: 40px;
+  margin-bottom: 8px;
+}
+
+[data-text-large='true'] .also-head h2 {
+  line-height: 1.05;
 }
 
 [data-text-large='true'] .cards {

@@ -60,6 +60,17 @@ onBeforeUnmount(() => {
           <button type="button" :class="{ active: tab === 'saved' }" @click="chooseTab('saved')">Saved</button>
           <button type="button" :class="{ active: tab === 'mine' }" @click="chooseTab('mine')">My recipes</button>
         </div>
+        <button class="party" type="button" @click="router.push('/party')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="4" />
+            <circle cx="8" cy="8" r="1" fill="currentColor" stroke="none" />
+            <circle cx="16" cy="8" r="1" fill="currentColor" stroke="none" />
+            <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+            <circle cx="8" cy="16" r="1" fill="currentColor" stroke="none" />
+            <circle cx="16" cy="16" r="1" fill="currentColor" stroke="none" />
+          </svg>
+          Host a party
+        </button>
         <button class="new" type="button" @click="showToast('Recipe editor is coming next.')">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
             <path d="M12 5v14M5 12h14" />
@@ -203,19 +214,28 @@ h1 {
   color: var(--text-primary);
 }
 
-.new {
+.new,
+.party {
   height: 44px;
   padding: 0 18px;
   border: 0;
   border-radius: 999px;
-  background: var(--accent);
-  color: var(--text-on-accent);
   display: inline-flex;
   align-items: center;
   gap: 7px;
   font-size: calc(14px * var(--text-scale, 1));
   font-weight: 600;
   cursor: pointer;
+}
+
+.party {
+  background: var(--fill-2);
+  color: var(--text-primary);
+}
+
+.new {
+  background: var(--accent);
+  color: var(--text-on-accent);
 }
 
 .layout {

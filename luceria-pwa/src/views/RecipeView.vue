@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import DrinkGlass from '../components/DrinkGlass.vue'
+import DrinkArt from '../components/DrinkArt.vue'
 import { useDemoStore } from '../stores/demo'
 import type { RecipeIngredient, Unit } from '../types'
 
@@ -93,8 +93,7 @@ onBeforeUnmount(() => {
         </button>
       </div>
       <div class="art-glow" />
-      <img v-if="recipe.art" class="art-image" :src="recipe.art" alt="" />
-      <DrinkGlass v-else :liquid="recipe.liquid" :hue="recipe.hue" />
+      <DrinkArt :recipe="recipe" class="art-image" />
     </aside>
 
     <section class="detail">

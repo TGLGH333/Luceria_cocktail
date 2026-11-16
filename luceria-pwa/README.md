@@ -15,7 +15,7 @@ pnpm install
 pnpm dev
 ```
 
-Open `http://127.0.0.1:5173/` for the Welcome screen, or go straight to `http://127.0.0.1:5173/#/tonight`.
+Open `http://127.0.0.1:5173/` for the splash screen; it moves to Welcome after 2.8 s. You can also go straight to `http://127.0.0.1:5173/#/tonight`.
 
 If `pnpm` is not on `PATH` in this workspace, run it through the bundled Node runtime:
 
@@ -77,27 +77,44 @@ npx netlify deploy --dir dist
 
 | Route | Screen | Notes |
 | --- | --- | --- |
-| `/#/` | L02 Welcome | Redirects here; Get started goes to Tonight |
+| `/#/` | L01 Splash | Ink illustration, auto-advances to Welcome after 2.8 s; tap to skip |
+| `/#/welcome` | L02 Welcome | Three drink illustrations, Get started, sign-in entry |
+| `/#/signin` | L08 Sign in | Apple/Google demo toast, email code flow, guest mode |
+| `/#/signin/email` | L09 Email | Email entry, validation, six-digit code |
+| `/#/signin/code` | L10 Verify | Six digits, paste/backspace support, resend timer |
+| `/#/party` | P02 Party | Dice and wheel game cards, full-screen without TabBar |
+| `/#/party/dice` | P03 Dice | 2/3/5 dice, animated roll, total and history |
+| `/#/party/wheel` | P04/P04b Wheel | Eight editable forfeits, animated spin, result and history |
 | `/#/tonight` | T01 Tonight | Hero pick, Start mixing, View recipe, also-ready cards |
-| `/#/recipes` | R01 Recipes | Search, ready/almost filters, 10 demo recipes |
+| `/#/recipes` | R01 Recipes | Search, ready/almost filters, 13 demo recipes |
 | `/#/recipe/:slug` | D01/D02 Recipe | Ingredients and Method tabs, servings, units, optional garnish |
 | `/#/mix/:slug` | M00–M12 Mixing | Plan → step timer → done / save to journal |
-| `/#/bar` | B01/B05 My Bar | 15 ingredients, stock sheet, add ingredients, next buy |
+| `/#/bar` | B01/B05 My Bar | 21 ingredients, stock sheet, add ingredients, next buy |
 | `/#/list` | S01 Shopping list | Derived from missing ingredients, check/clear, unlock panel |
-| `/#/journal` | J01 Journal | Mixes, week stats, mindful-drinking card |
+| `/#/journal` | J01 Journal | Mixes, week stats, mindful-drinking card, Host a party |
 | `/#/settings` | X01/X02/X06/X08 | Theme, contrast, text size, touch targets, units, servings, about |
 
-The 5-tab bar is shared by the main sections. Recipe and mixing screens are immersive and hide it.
+The 5-tab bar is shared by the main sections. Splash, onboarding, sign-in, party, game, recipe and mixing screens hide it.
 
 ## Demo data
 
 Everything is local and in-memory / `localStorage`; there is no backend yet.
 
-- 10 recipes: Negroni, Boulevardier, Old Fashioned, Daiquiri, Black Russian, Whiskey Sour, Margarita, Mojito, Cosmopolitan, Mint Julep.
-- 19 ingredients; 15 in the demo bar.
-- Initial bar: 15 ingredients, 7 ready cocktails, 2 running low, fresh mint out.
+- 13 recipes: Negroni, Boulevardier, Old Fashioned, Daiquiri, Black Russian, Whiskey Sour, Margarita, Mojito, Cosmopolitan, Mint Julep, Espresso Martini, Aperol Spritz, Paloma.
+- 25 ingredients; 21 in the demo bar.
+- Initial bar: 21 ingredients, 10 ready cocktails, 2 running low, fresh mint out.
 - The Negroni uses the exact 6-step / 30 + 30 + 30 ml spec from the handoff.
 - Shopping list is derived from the bar; it is not an editable persisted list yet.
+
+### Recipe and artwork sources
+
+The three added cocktails follow classic bar proportions; measurements were checked against Difford's Guide:
+
+- [Espresso Martini](https://www.diffordsguide.com/cocktails/recipe/725/espresso-martini) — 45 ml vodka, 30 ml espresso, 20 ml coffee liqueur.
+- [Aperol Spritz](https://www.diffordsguide.com/cocktails/recipe/2908/aperol-spritz-aperitivo-spritz) — 3:2:1 prosecco, Aperol and soda.
+- [Paloma](https://www.diffordsguide.com/cocktails/recipe/1456/paloma) — 50 ml tequila, 25 ml pink grapefruit juice, 12.5 ml lime, 7.5 ml agave, 50 ml grapefruit soda.
+
+Difford's Guide blocks automated page and image downloads (HTTP 405 / human verification), and its photography is copyrighted. The three new sample images in `public/art/` are original SVG illustrations drawn for this demo in the app's dark/amber drink style; they are not copied from the site.
 
 ## Demo helpers
 
@@ -108,12 +125,12 @@ Everything is local and in-memory / `localStorage`; there is no backend yet.
 
 This is the P0 demo for the deadline, not the 82-screen product.
 
-- No auth, backend, community, OCR, voice, party mode or 120-recipe catalogue.
-- Placeholder SVG glass artwork instead of the licensed Luceria renders.
+- No backend, community, OCR, real Apple/Google auth or 120-recipe catalogue. The sign-in code is a local demo that accepts any six digits. The party planner is also a demo placeholder; Dice and Spin the wheel are playable.
+- Artwork is a mix of the supplied Figma drink renders and original SVG illustrations; the Figma layers marked `ASSET TODO` are still temporary.
 - Theme follows `dark` by default; Automatic / Light / High contrast are selectable in Settings.
 - Accessibility: Dynamic Type up to 200% with reflow, read-aloud + captions, timer chime/haptic/flash, larger targets, reduced motion and high contrast are implemented; VoiceOver/Switch Control still need a manual iPad pass. Details are in `DESIGN_AUDIT.md`.
-- A few controls (Saved, My recipes, Scan label, Share, Add item) intentionally show a “coming next” toast.
-- Design-data conflicts are recorded in `..\FRONTEND_DEVELOPER_GUIDE.md`; the demo uses 2 min for Negroni (D01/T01) and 10 demo recipes instead of 120.
+- A few controls (Saved, My recipes, Scan label, Share, Add item, Planner) intentionally show a “coming next” toast.
+- Design-data conflicts are recorded in `..\FRONTEND_DEVELOPER_GUIDE.md`; the demo uses 2 min for Negroni and 13 demo recipes instead of 120.
 
 ## Structure
 

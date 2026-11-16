@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
 import { barOrder, initialAutoAdd, initialBar, ingredientBySlug, ingredients } from '../data/ingredients'
 import { recipeBySlug, recipes } from '../data/recipes'
-import type { JournalEntry, Recipe, Settings, StockLevel } from '../types'
+import type { Account, JournalEntry, Recipe, Settings, StockLevel } from '../types'
 
 const BAR_KEY = 'luceria.bar.v1'
 const JOURNAL_KEY = 'luceria.journal.v1'
 const SETTINGS_KEY = 'luceria.settings.v2'
+const ACCOUNT_KEY = 'luceria.account.v1'
 
 const defaultSettings: Settings = {
   theme: 'dark',
@@ -43,6 +44,17 @@ function writeJSON(key: string, value: unknown) {
     localStorage.setItem(key, JSON.stringify(value))
   } catch {
     /* storage can be unavailable in private mode; the demo still runs in memory */
+  }
+}
+
+function readAccount(): Account | null {
+  try {
+    const raw = localStorage.getItem(ACCOUNT_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as Account
+    return typeof parsed?.email === 'string' ? parsed : null
+  } catch {
+    return null
   }
 }
 
@@ -110,6 +122,7 @@ export const useDemoStore = defineStore('demo', {
     autoAdd: readJSON<Record<string, boolean>>(`${BAR_KEY}.auto`, { ...initialAutoAdd }),
     journal: readJSON<JournalEntry[]>(JOURNAL_KEY, seedJournal()),
     settings: readJSON<Settings>(SETTINGS_KEY, { ...defaultSettings }),
+    account: readAccount(),
   }),
   getters: {
     recipeBySlug: () => (slug: string) => recipeBySlug.get(slug),
@@ -234,6 +247,15 @@ export const useDemoStore = defineStore('demo', {
     updateSettings(patch: Partial<Settings>) {
       this.settings = { ...this.settings, ...patch }
       this.persistSettings()
+    },
+    signIn(email: string) {
+      const clean = email.trim().toLowerCase()
+      this.account = { email: clean, name: clean.split('@')[0] }
+      writeJSON(ACCOUNT_KEY, this.account)
+    },
+    signOut() {
+      this.account = null
+      writeJSON(ACCOUNT_KEY, null)
     },
     resetDemo() {
       this.bar = { ...initialBar }
