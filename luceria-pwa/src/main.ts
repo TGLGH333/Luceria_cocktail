@@ -2,8 +2,13 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+import { applyDemoReset } from './demoReset'
 import './styles/tokens.css'
 import './styles/base.css'
+
+// Must run before any store is created, because stores read localStorage when
+// they are first instantiated.
+applyDemoReset()
 
 createApp(App).use(createPinia()).use(router).mount('#app')
 

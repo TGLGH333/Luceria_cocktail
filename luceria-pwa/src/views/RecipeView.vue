@@ -93,7 +93,8 @@ onBeforeUnmount(() => {
         </button>
       </div>
       <div class="art-glow" />
-      <DrinkGlass :liquid="recipe.liquid" :hue="recipe.hue" />
+      <img v-if="recipe.art" class="art-image" :src="recipe.art" alt="" />
+      <DrinkGlass v-else :liquid="recipe.liquid" :hue="recipe.hue" />
     </aside>
 
     <section class="detail">
@@ -204,7 +205,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 517px minmax(0, 1fr);
+  grid-template-columns: 500px minmax(0, 1fr);
   background: var(--bg-base);
   color: var(--text-primary);
   overflow: hidden;
@@ -227,13 +228,26 @@ onBeforeUnmount(() => {
   filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.4));
 }
 
+.art-image {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: auto;
+  height: 460px;
+  max-width: 86%;
+  object-fit: contain;
+  margin-top: 0;
+  filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.4));
+}
+
 .art-glow {
   position: absolute;
-  width: 380px;
-  height: 330px;
+  top: 190px;
+  left: 10px;
+  width: 480px;
+  height: 480px;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 70%);
-  filter: blur(18px);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 30%, transparent) 0%, transparent 70%);
 }
 
 .round {
@@ -272,7 +286,7 @@ onBeforeUnmount(() => {
 .detail {
   height: 100%;
   overflow-y: auto;
-  padding: 52px 40px 120px 46px;
+  padding: 52px 40px 120px;
   scrollbar-width: none;
 }
 
@@ -282,17 +296,17 @@ onBeforeUnmount(() => {
 
 h1 {
   margin: 0;
-  font-size: calc(44px * var(--text-scale, 1));
-  line-height: calc(50px * var(--text-scale, 1));
+  font-size: calc(40px * var(--text-scale, 1));
+  line-height: calc(46px * var(--text-scale, 1));
   font-weight: 700;
-  letter-spacing: -1.4px;
+  letter-spacing: -1.2px;
 }
 
 .description {
   margin: 7px 0 0;
   max-width: 540px;
-  font-size: calc(16px * var(--text-scale, 1));
-  line-height: calc(23px * var(--text-scale, 1));
+  font-size: calc(18px * var(--text-scale, 1));
+  line-height: calc(25px * var(--text-scale, 1));
   color: var(--text-secondary);
 }
 
@@ -567,14 +581,14 @@ h1 {
 
 .start-wrap {
   position: absolute;
-  left: 563px;
+  left: 540px;
   right: 40px;
-  bottom: 22px;
+  bottom: 32px;
 }
 
 .start {
   width: 100%;
-  height: 52px;
+  height: 64px;
   border: 0;
   border-radius: 999px;
   background: var(--accent);
@@ -583,7 +597,7 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 9px;
-  font-size: calc(17px * var(--text-scale, 1));
+  font-size: calc(20px * var(--text-scale, 1));
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
@@ -627,6 +641,16 @@ h1 {
   height: 320px;
 }
 
+[data-text-large='true'] .art-glow {
+  display: none;
+}
+
+[data-text-large='true'] .art-image {
+  height: auto;
+  max-height: 260px;
+  margin-top: 0;
+}
+
 [data-text-large='true'] .art :deep(.glass) {
   width: 220px;
   margin-top: 0;
@@ -652,5 +676,11 @@ h1 {
 [data-text-large='true'] .start-wrap {
   position: static;
   margin-top: 28px;
+}
+
+[data-text-large='true'] .start {
+  height: auto;
+  min-height: 64px;
+  padding-block: 10px;
 }
 </style>

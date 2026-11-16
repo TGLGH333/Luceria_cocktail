@@ -34,6 +34,22 @@
   font-display: swap;
 }
 
+/* Drink glows from the Figma Foundations page. */
+:root {
+  --glow-negroni: #d0533f;
+  --glow-margarita: #d9734f;
+  --glow-sour: #d9a05b;
+  --glow-russian: #6f8fb3;
+  --glow-mojito: #a3b85a;
+  --glow-cosmo: #c9577a;
+  --glow-colada: #d9c27a;
+  --glow-boulevardier: #d9734f;
+  --glow-old-fashioned: #d9a05b;
+  --glow-daiquiri: #a3b85a;
+  --glow-whiskey-sour: #d9a05b;
+  --glow-mint-julep: #a3b85a;
+}
+
 :root,
 :root[data-theme='dark'] {
   --bg-base: #121110;

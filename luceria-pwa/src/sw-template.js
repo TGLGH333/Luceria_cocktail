@@ -1,10 +1,22 @@
-/* Luceria PWA: a small offline shell. */
-const CACHE = 'luceria-shell-v1'
+/*
+ * Luceria PWA: offline shell.
+ *
+ * Source of truth for the service worker. `npm run build` renders this file to
+ * `dist/sw.js` through `scripts/stamp-sw.mjs`, which replaces the build
+ * placeholder below with the package version plus the build timestamp. Every build therefore gets a
+ * fresh cache name, so an installed home-screen app picks up new code instead
+ * of serving the shell it cached on the first visit.
+ */
+const BUILD = '__BUILD__'
+const CACHE = `luceria-shell-${BUILD}`
 const SHELL = ['/', '/index.html', '/manifest.webmanifest']
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(SHELL)).then(() => self.skipWaiting()),
+    caches
+      .open(CACHE)
+      .then((cache) => cache.addAll(SHELL))
+      .then(() => self.skipWaiting()),
   )
 })
 

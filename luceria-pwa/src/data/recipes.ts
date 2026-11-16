@@ -18,6 +18,8 @@ export const recipes: Recipe[] = [
     hue: '#2E1C1D',
     hueLight: '#F4E2DA',
     liquid: '#F0A64B',
+    glow: 'var(--glow-negroni)',
+    art: '/art/negroni.png',
     ingredients: [
       { slug: 'gin', amount: 30, unit: 'ml' },
       { slug: 'campari', amount: 30, unit: 'ml' },
@@ -76,6 +78,7 @@ export const recipes: Recipe[] = [
     hue: '#2C221F',
     hueLight: '#F3E3D5',
     liquid: '#D9734F',
+    glow: 'var(--glow-boulevardier)',
     ingredients: [
       { slug: 'bourbon', amount: 30, unit: 'ml' },
       { slug: 'campari', amount: 30, unit: 'ml' },
@@ -115,6 +118,7 @@ export const recipes: Recipe[] = [
     hue: '#2B2119',
     hueLight: '#F0E4CE',
     liquid: '#B46A32',
+    glow: 'var(--glow-old-fashioned)',
     ingredients: [
       { slug: 'bourbon', amount: 60, unit: 'ml' },
       { slug: 'sugar-syrup', amount: 10, unit: 'ml' },
@@ -152,6 +156,7 @@ export const recipes: Recipe[] = [
     hue: '#252A24',
     hueLight: '#E9F0DF',
     liquid: '#D8E3B8',
+    glow: 'var(--glow-daiquiri)',
     ingredients: [
       { slug: 'light-rum', amount: 60, unit: 'ml' },
       { slug: 'limes', amount: 25, unit: 'ml' },
@@ -191,6 +196,7 @@ export const recipes: Recipe[] = [
     hue: '#1C2128',
     hueLight: '#E4E9F1',
     liquid: '#6F8FB3',
+    glow: 'var(--glow-russian)',
     ingredients: [
       { slug: 'vodka', amount: 60, unit: 'ml' },
       { slug: 'coffee-liqueur', amount: 22.5, unit: 'ml' },
@@ -227,6 +233,7 @@ export const recipes: Recipe[] = [
     hue: '#2C2419',
     hueLight: '#F6E7CF',
     liquid: '#D9A05B',
+    glow: 'var(--glow-whiskey-sour)',
     ingredients: [
       { slug: 'bourbon', amount: 60, unit: 'ml' },
       { slug: 'lemons', amount: 30, unit: 'ml' },
@@ -244,13 +251,13 @@ export const recipes: Recipe[] = [
   {
     slug: 'margarita',
     name: 'Margarita',
-    description: 'Tequila, orange liqueur and lime — cold, bright and perfectly balanced.',
+    description: 'Tequila-forward and tangy, with a hint of agave.',
     baseSpirit: 'Tequila',
     method: 'Shaken',
     glassware: 'Old-fashioned glass',
     ice: 'Cubed ice',
     garnish: 'Lime wedge',
-    abv: 26,
+    abv: 20.2,
     minutes: 3,
     rating: 4.8,
     reviews: 291,
@@ -258,6 +265,7 @@ export const recipes: Recipe[] = [
     hue: '#2C221F',
     hueLight: '#F6E3D9',
     liquid: '#D9734F',
+    glow: 'var(--glow-margarita)',
     ingredients: [
       { slug: 'tequila', amount: 45, unit: 'ml' },
       { slug: 'cointreau', amount: 22.5, unit: 'ml' },
@@ -288,6 +296,7 @@ export const recipes: Recipe[] = [
     hue: '#232A1E',
     hueLight: '#E6F0D8',
     liquid: '#B9D06B',
+    glow: 'var(--glow-mojito)',
     ingredients: [
       { slug: 'light-rum', amount: 60, unit: 'ml' },
       { slug: 'limes', amount: 15, unit: 'ml' },
@@ -327,6 +336,7 @@ export const recipes: Recipe[] = [
     hue: '#2A1C24',
     hueLight: '#F6DFE7',
     liquid: '#D9557B',
+    glow: 'var(--glow-cosmo)',
     ingredients: [
       { slug: 'vodka', amount: 22.5, unit: 'ml' },
       { slug: 'cointreau', amount: 22.5, unit: 'ml' },
@@ -368,6 +378,7 @@ export const recipes: Recipe[] = [
     hue: '#2A281D',
     hueLight: '#EAF0DC',
     liquid: '#A3B85A',
+    glow: 'var(--glow-mint-julep)',
     ingredients: [
       { slug: 'bourbon', amount: 60, unit: 'ml' },
       { slug: 'sugar-syrup', amount: 10, unit: 'ml' },

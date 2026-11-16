@@ -30,7 +30,34 @@ Build:
 pnpm build
 ```
 
-`pnpm build` runs `vue-tsc --noEmit` then Vite. `dist/` is the deployable output.
+`pnpm build` runs `vue-tsc --noEmit`, then Vite, then `scripts/stamp-sw.mjs`, which renders `src/sw-template.js` into `dist/sw.js` with a per-build cache name. `dist/` is the deployable output.
+
+## Run on an iPad with Safari
+
+The Vite server binds to all interfaces, so the iPad only needs to be on the same Wi-Fi network.
+
+1. On Windows, run `ipconfig` and find the WLAN adapter's IPv4 address, for example `10.135.69.171`.
+2. Start the static production server on the PC:
+
+```bash
+pnpm build
+pnpm preview
+```
+
+3. On the iPad, open Safari and go to:
+
+```text
+http://<WLAN-IP>:4173/#/tonight
+```
+
+For the live-dev version, use `pnpm dev` and port `5173` instead. The page is a normal Safari tab, so no certificate is needed.
+
+### Home Screen / offline notes
+
+- A normal Safari tab works over HTTP on the LAN.
+- To install it as a standalone Home Screen app with the service worker and offline cache, Safari needs a **secure context (HTTPS)**. On plain `http://<LAN-IP>` Safari can display the page, but the service worker will not register.
+- The simplest HTTPS path is the included Netlify setup below (or any static host with HTTPS). After the first online load, open Share -> Add to Home Screen. The manifest, 180/192/512 icons and `apple-mobile-web-app-*` tags are already present.
+- The dev server never registers the service worker: registration is production-only in `src/main.ts`.
 
 ## Deploy to Netlify
 
@@ -44,7 +71,7 @@ npx netlify deploy --dir dist
 - Build command: `pnpm build` · publish directory: `dist`
 - HTTPS is required for iPad Safari “Add to Home Screen”.
 - The PWA manifest is `public/manifest.webmanifest`; icons are in `public/icons/`.
-- A small service worker (`public/sw.js`) caches the shell and static assets after the first online load, so the app can reopen offline. It is registered only in a production build.
+- A small service worker caches the shell and static assets after the first online load, so the app can reopen offline. Its source is `src/sw-template.js`; the build stamps a fresh cache name into `dist/sw.js`, so a redeploy replaces a stale shell instead of serving it from cache. It is registered only in a production build.
 
 ## Routes
 
@@ -72,6 +99,11 @@ Everything is local and in-memory / `localStorage`; there is no backend yet.
 - The Negroni uses the exact 6-step / 30 + 30 + 30 ml spec from the handoff.
 - Shopping list is derived from the bar; it is not an editable persisted list yet.
 
+## Demo helpers
+
+- **Reset the demo state.** Open the deployed URL with `?demo=reset` (for example `https://<site>/?demo=reset`) and reload. The bar, its auto-add flags, the journal, settings and any in-progress mixing sessions are deleted from `localStorage` before Pinia boots, so the app comes back with the seeded demo data. A short toast confirms the reset. Standalone mode has no address bar, so use a Safari tab for this; the in-app equivalent is Settings → Reset demo.
+- **Offline shell.** The service worker is cache-first, so an installed home-screen app only picks up a redeploy after the worker updates — which happens automatically because every build gets a new cache name. Open the app once online after a deploy, or the next launch while offline will still show the old shell.
+
 ## Scope and limitations
 
 This is the P0 demo for the deadline, not the 82-screen product.
@@ -95,9 +127,12 @@ src/
   components/           DrinkGlass, TabBar
   views/                Welcome, Tonight, Recipes, Recipe, Mix, Bar, List, Journal, Settings
   styles/               tokens.css (dark/light/hc), base.css
+  demoReset.ts          ?demo=reset handler, runs before Pinia boots
+  sw-template.js        service worker source, stamped into dist/sw.js at build
 public/fonts/           local Inter woff2 files
 public/manifest.webmanifest
 public/icons/           Home Screen icons
+scripts/stamp-sw.mjs    renders dist/sw.js with a per-build cache name
 netlify.toml            build + SPA redirect
 DESIGN_AUDIT.md         gap analysis against Figma_design/DEVELOPER_GUIDE.md
 ```

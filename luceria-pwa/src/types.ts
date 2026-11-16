@@ -51,6 +51,8 @@ export interface Recipe {
   hue: string
   hueLight: string
   liquid: string
+  glow: string
+  art?: string
   ingredients: RecipeIngredient[]
   steps: RecipeStep[]
   equipment: string[]

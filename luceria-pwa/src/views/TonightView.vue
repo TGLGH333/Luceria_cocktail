@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import DrinkGlass from '../components/DrinkGlass.vue'
 import { useDemoStore } from '../stores/demo'
@@ -9,6 +9,8 @@ const store = useDemoStore()
 
 const heroIndex = ref(0)
 const toast = ref('')
+const titleEl = ref<HTMLElement | null>(null)
+const titleStyle = ref<Record<string, string>>({})
 let toastTimer: number | undefined
 
 const ready = computed(() => store.readyRecipes)
@@ -26,11 +28,16 @@ const heroHue = computed(() => {
   return resolvedTheme.value === 'light' ? heroRecipe.value.hueLight : heroRecipe.value.hue
 })
 
-const heroStyle = computed(() => {
-  if (!heroRecipe.value) return { background: 'var(--bg-base)' }
-  const glow = resolvedTheme.value === 'hc' ? 'transparent' : `${heroRecipe.value.liquid}4d`
+const heroGlow = computed(() => {
+  if (!heroRecipe.value || resolvedTheme.value === 'hc') return 'transparent'
+  return heroRecipe.value.glow
+})
+
+const heroStyle = computed<Record<string, string>>(() => {
+  if (!heroRecipe.value) return { background: 'var(--bg-base)', '--hero-glow': 'transparent' }
   return {
-    background: `radial-gradient(46% 55% at 78% 46%, ${glow} 0%, var(--bg-clear) 70%), linear-gradient(180deg, ${heroHue.value} 0%, var(--bg-base) 60%)`,
+    background: `linear-gradient(180deg, ${heroHue.value} 0%, var(--bg-base) 60%)`,
+    '--hero-glow': heroGlow.value,
   }
 })
 
@@ -49,9 +56,22 @@ const heroMeta = computed(() => {
   ]
 })
 
+// The design curates the three suggestions on T01/T01b rather than taking
+// whatever order the bar happens to return.
+const alsoPriority = [
+  'whiskey-sour',
+  'margarita',
+  'black-russian',
+  'negroni',
+  'boulevardier',
+  'old-fashioned',
+  'daiquiri',
+]
+
 const also = computed(() =>
   ready.value
     .filter((recipe) => recipe.slug !== heroRecipe.value?.slug)
+    .sort((a, b) => alsoPriority.indexOf(a.slug) - alsoPriority.indexOf(b.slug))
     .slice(0, 3)
     .map((recipe) => ({
       slug: recipe.slug,
@@ -59,6 +79,7 @@ const also = computed(() =>
       status: `Ready · ${recipe.minutes} min`,
       hue: resolvedTheme.value === 'light' ? recipe.hueLight : recipe.hue,
       liquid: recipe.liquid,
+      art: recipe.art,
     })),
 )
 
@@ -81,6 +102,41 @@ function viewRecipe(slug = heroRecipe.value?.slug) {
 function shuffle() {
   if (ready.value.length > 1) heroIndex.value += 1
 }
+
+async function fitTitle() {
+  // At default size the design title is 88px on one line. Long names such as
+  // "Old Fashioned" would wrap and push the action row into Also ready.
+  // At larger Dynamic Type sizes we intentionally allow wrapping and let the
+  // hero grow, so only auto-fit the default scale.
+  await nextTick()
+  const el = titleEl.value
+  if (!el) return
+  el.style.removeProperty('font-size')
+  el.style.removeProperty('line-height')
+  if (store.settings.textScale !== 1) {
+    titleStyle.value = {}
+    return
+  }
+  const naturalWidth = el.scrollWidth
+  const available = el.clientWidth
+  if (!naturalWidth || naturalWidth <= available) {
+    titleStyle.value = {}
+    return
+  }
+  const fitted = Math.max(70, Math.floor((88 * available) / naturalWidth) - 1)
+  titleStyle.value = {
+    fontSize: `${fitted}px`,
+    lineHeight: '92px',
+  }
+}
+
+onMounted(fitTitle)
+
+watch(
+  [() => heroRecipe.value?.slug, () => store.settings.textScale],
+  fitTitle,
+  { flush: 'post' },
+)
 
 onBeforeUnmount(() => {
   if (toastTimer) window.clearTimeout(toastTimer)
@@ -109,7 +165,7 @@ onBeforeUnmount(() => {
 
       <div v-if="heroRecipe" class="hero-copy">
         <p class="overline">YOUR POUR FOR TONIGHT</p>
-        <h1>{{ heroRecipe.name }}</h1>
+        <h1 ref="titleEl" :class="{ 'fit-title': store.settings.textScale === 1 }" :style="titleStyle">{{ heroRecipe.name }}</h1>
         <p class="lede">{{ heroLede }}</p>
         <div class="meta">
           <span v-for="item in heroMeta" :key="item" class="pill">{{ item }}</span>
@@ -144,7 +200,8 @@ onBeforeUnmount(() => {
 
       <div v-if="heroRecipe" class="hero-art" aria-hidden="true">
         <div class="art-glow" />
-        <DrinkGlass :liquid="heroRecipe.liquid" :hue="heroHue" />
+        <img v-if="heroRecipe.art" class="hero-image" :src="heroRecipe.art" alt="" />
+        <DrinkGlass v-else :liquid="heroRecipe.liquid" :hue="heroHue" />
       </div>
     </section>
 
@@ -199,14 +256,16 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: var(--bg-base);
   color: var(--text-primary);
 }
 
 .hero {
   position: relative;
-  height: 540px;
+  min-height: 540px;
+  height: auto;
   padding: 152px 40px 0;
   overflow: hidden;
 }
@@ -246,6 +305,19 @@ onBeforeUnmount(() => {
   border-radius: 28px;
 }
 
+[data-text-large='true'] .btn {
+  height: auto;
+  min-height: 64px;
+  padding-block: 10px;
+}
+
+[data-text-large='true'] .btn.icon {
+  width: 64px;
+  min-width: 64px;
+  height: 64px;
+  padding: 0;
+}
+
 .hero::after {
   content: '';
   position: absolute;
@@ -257,7 +329,7 @@ onBeforeUnmount(() => {
 .hero-copy {
   position: relative;
   z-index: 2;
-  width: 610px;
+  width: 580px;
 }
 
 .overline {
@@ -271,7 +343,7 @@ onBeforeUnmount(() => {
 }
 
 h1 {
-  margin: 0 0 18px;
+  margin: 0 0 15px;
   font-size: calc(88px * var(--text-scale, 1));
   line-height: calc(92px * var(--text-scale, 1));
   font-weight: 700;
@@ -279,9 +351,17 @@ h1 {
   color: var(--text-primary);
 }
 
+h1.fit-title {
+  white-space: nowrap;
+}
+
+[data-text-large='true'] h1 {
+  white-space: normal;
+}
+
 .lede {
-  margin: 0 0 22px;
-  max-width: 560px;
+  margin: 0 0 14px;
+  max-width: 540px;
   font-size: calc(18px * var(--text-scale, 1));
   line-height: calc(26px * var(--text-scale, 1));
   font-weight: 400;
@@ -293,11 +373,11 @@ h1 {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 34px;
 }
 
 .pill {
-  height: 36px;
+  height: 34px;
   padding: 0 18px;
   display: inline-flex;
   align-items: center;
@@ -313,19 +393,19 @@ h1 {
 .actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .btn {
-  height: 52px;
-  padding: 0 28px;
+  height: 60px;
+  padding: 0 30px;
   border: 0;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-size: calc(17px * var(--text-scale, 1));
+  font-size: calc(20px * var(--text-scale, 1));
   font-weight: 600;
   letter-spacing: -0.2px;
   cursor: pointer;
@@ -340,6 +420,7 @@ h1 {
 }
 
 .btn.primary {
+  padding-inline: 36px;
   background: var(--accent);
   color: var(--text-on-accent);
 }
@@ -358,8 +439,8 @@ h1 {
 }
 
 .btn.icon {
-  width: 44px;
-  height: 44px;
+  width: 60px;
+  height: 60px;
   padding: 0;
   border-radius: 50%;
   background: var(--fill-2);
@@ -372,17 +453,17 @@ h1 {
 
 .top-actions {
   position: absolute;
-  top: 54px;
+  top: 40px;
   right: 40px;
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .round {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 1px solid var(--line-subtle);
   background: color-mix(in srgb, var(--fill-2) 88%, transparent);
@@ -407,8 +488,8 @@ h1 {
 }
 
 .avatar {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   border: 1px solid var(--line-subtle);
   background: var(--fill-3);
@@ -432,28 +513,40 @@ h1 {
 
 .hero-art {
   position: absolute;
-  top: 58px;
-  right: 150px;
+  top: 92px;
+  right: 134px;
   z-index: 1;
-  width: 440px;
+  width: 380px;
   height: 390px;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   pointer-events: none;
 }
 
 .art-glow {
   position: absolute;
-  width: 430px;
-  height: 330px;
+  top: -92px;
+  left: -70px;
+  width: 540px;
+  height: 540px;
   border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 26%, transparent) 0%, transparent 70%);
-  filter: blur(18px);
+  background: radial-gradient(circle, color-mix(in srgb, var(--hero-glow) 34%, transparent) 0%, transparent 70%);
+}
+
+.hero-image {
+  position: relative;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 26px 46px rgba(0, 0, 0, 0.45));
+  animation: pour-in 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .hero-art :deep(.glass) {
   position: relative;
-  width: 420px;
+  width: 300px;
   filter: drop-shadow(0 26px 46px rgba(0, 0, 0, 0.45));
   animation: pour-in 900ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
@@ -477,16 +570,17 @@ h1 {
 }
 
 .also-head {
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 4px;
+  margin-bottom: 14px;
 }
 
 .also-head h2 {
   margin: 0;
-  font-size: calc(24px * var(--text-scale, 1));
-  line-height: calc(30px * var(--text-scale, 1));
+  font-size: calc(20px * var(--text-scale, 1));
+  line-height: calc(24px * var(--text-scale, 1));
   font-weight: 600;
   letter-spacing: -0.5px;
 }
@@ -516,7 +610,7 @@ h1 {
 }
 
 .card {
-  height: 88px;
+  height: 84px;
   padding: 0 22px 0 10px;
   border: 1px solid var(--line-subtle);
   border-radius: 999px;
@@ -554,6 +648,7 @@ h1 {
 .thumb :deep(.glass.mini) {
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
 }
+
 
 .card-copy {
   min-width: 0;

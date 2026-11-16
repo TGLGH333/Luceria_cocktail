@@ -6,7 +6,12 @@ dist/
 
 # Local scratch files
 .dsh-write-test.tmp
+.figma-extract/
+.pnpm-store/
 *.log
+
+# Local design-reading tooling (not part of the PWA)
+/dsh-figma-reader/
 
 # OS files
 .DS_Store
